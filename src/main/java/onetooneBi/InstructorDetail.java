@@ -1,7 +1,9 @@
+package onetooneBi;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "instructorDetail")
+@Table(name = "instructor_detail")
 public class InstructorDetail {
 
     @Id
@@ -14,6 +16,16 @@ public class InstructorDetail {
 
     @Column(name = "hobby")
     private String hobby;
+
+    @OneToOne(mappedBy = "instructorDetail",cascade = CascadeType.ALL)
+//    to delete either instructordetail or instructor only but not both at a time then remove cascadeType.ALL
+//    and replace it with all other cascadeType except .REMOVE
+//    same with the case of Instructor too if we want to only delete instructor but not instructordetail
+//    then remove cascadeType.ALL in instructor
+//     and also break the bi-link from main class by
+//    "instructor.getInstructorDetails().setInstructorDetails(NULL) and then perform delete operation
+
+    private Instructor instructor;
 
     public InstructorDetail(){
 
@@ -41,6 +53,13 @@ public class InstructorDetail {
         this.hobby = hobby;
     }
 
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
 
     @Override
     public String toString() {
