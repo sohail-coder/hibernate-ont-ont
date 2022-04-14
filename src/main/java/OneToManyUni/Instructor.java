@@ -1,8 +1,10 @@
-package onetooneBi;
+package OneToManyUni;
 
-import onetomany.Course;
+
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "instructor")
@@ -23,6 +25,10 @@ public class Instructor {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+
+    private List<Course> courses;
 
 
     public Instructor() {
@@ -67,6 +73,14 @@ public class Instructor {
         this.instructorDetail = instructorDetail;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
     @Override
     public String toString() {
         return "Instructor{" +
@@ -77,6 +91,11 @@ public class Instructor {
                 ", instructorDetail=" + instructorDetail +
                 '}';
     }
-
-
+    public void add(Course course){
+        if(courses==null){
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+        course.setInstructor(this);
+    }
 }
